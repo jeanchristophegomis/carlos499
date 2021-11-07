@@ -1,0 +1,19 @@
+/*Variable*/
+$police_roboto : 'Roboto', sans-serif;
+$color-primary: #9356dc;
+$color-secondary: #ff79da;
+$color-tertiary : #99e2d0;
+$color-background-primary : #ffffff;
+$color-background-secondary : #f6f6f6;
+$accueil-titre-size: (
+    mobile:1.6em,
+    tablet: 1.9em,
+    desktop:2em
+);
+
+$ombre : (
+		mobile : 4 px  5 px  4 px  #C6C5C5 ,
+		tablette : 6 px  7 px  4 px  #C6C5C5 ,
+		bureau : 8 px  10 px  4 px  #C6C5C5 ,
+		survol : 8 px  10 px  9 px  #737373 ,
+	);
