@@ -542,6 +542,7 @@
   #restaurant a figcaption h3 {
     font-size: 1.2em;
     margin-bottom: 4px;
+    color: black;
   }
   @media screen and (min-width: 600px) {
     #restaurant a figcaption h3 {
@@ -557,6 +558,7 @@
   }
   #restaurant a figcaption p {
     font-size: 1.15em;
+    color: black;
   }
   @media screen and (min-width: 600px) {
     #restaurant a figcaption p {
