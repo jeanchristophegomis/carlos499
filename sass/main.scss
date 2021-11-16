@@ -6,14 +6,1016 @@ $color-tertiary : #99e2d0;
 $color-background-primary : #ffffff;
 $color-background-secondary : #f6f6f6;
 $accueil-titre-size: (
-    mobile:1.6em,
-    tablet: 1.9em,
-    desktop:2em
+	mobile:1.6em,
+	tablet: 1.9em,
+	desktop:2em
 );
 
-$ombre : (
-		mobile : 4 px  5 px  4 px  #C6C5C5 ,
-		tablette : 6 px  7 px  4 px  #C6C5C5 ,
-		bureau : 8 px  10 px  4 px  #C6C5C5 ,
-		survol : 8 px  10 px  9 px  #737373 ,
-	);
+$shadow : (
+	mobile:4px 5px 4px #C6C5C5,
+	tablet:6px 7px 4px #C6C5C5,
+	desktop:8px 10px 4px #C6C5C5,
+	hover: 8px 10px 9px #737373,
+);
+
+$breakpoints:(
+	tablet: 600px,
+	max-deskop: 1350px,
+	desktop: 1025px,
+);
+
+@keyframes spin {
+	0%   {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes loader {
+	0%   {
+		opacity:1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+@keyframes page {
+	0%   {
+		opacity:0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes apparition-progressive{
+	0%{
+		opacity: 0;
+		transform: translateY(5vh);
+	}
+
+	100%{
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@mixin loader($position, $color){
+	position: $position;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	 border-top-color: $color;
+}
+
+@mixin bouton-mobile {
+	position: relative;
+	z-index: 1;
+	color: white;
+	font-size: 1.1em;
+	background: linear-gradient( to top, $color-primary, $color-secondary);
+	box-shadow: map-get($shadow, mobile);
+	border-radius: 30px;
+	transition: box-shadow 300ms;
+	&:hover{
+		box-shadow: 9px 10px 9px #737373;
+		&::after {
+			opacity: 1;
+		}
+	}
+	&::after {
+		$color-primary-hover: lighten($color-primary, 3%);
+		$color-secondary-hover: lighten($color-secondary, 3%);
+		content: "";
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background: linear-gradient( to top, $color-primary-hover, $color-secondary-hover);
+		opacity: 0;
+		z-index: -1;
+		transition: opacity 500ms;
+		border-radius: 10rem;
+	}
+}
+
+@mixin bouton-tablet {
+	border-radius: 50px;
+}
+
+@mixin bouton-desktop {
+	font-size: 1.2em;
+	border-radius: 100px;
+}
+
+@mixin tablet-only {
+  @media screen and (min-width: map-get($breakpoints, tablet)){
+	  @content;
+  }
+}
+
+@mixin desktop-only {
+  @media screen and (min-width: map-get($breakpoints, desktop)){
+	  @content;
+  }
+}
+
+@mixin max-desktop-only {
+  @media screen and (min-width: map-get($breakpoints, max-deskop)){
+	  @content;
+  }
+}
+
+@mixin icon {
+	font-weight: 500;
+	color: #353535;
+	&:hover{
+		background-clip: content-box;
+		transition: color 200ms, font-weight 50ms;
+		font-weight: 600;
+		background: -webkit-linear-gradient(top, $color-primary 30%, $color-secondary 70%);
+		   -webkit-background-clip: text;
+		color: transparent;
+	}
+}
+
+@mixin apparition-progressive ($delais) {
+	opacity: 1;
+	transform: translateY(0);
+	animation: apparition-progressive 900ms $delais;
+	animation-fill-mode: both;
+}
+
+/*Style général*/
+*{
+	margin:0;
+}
+
+body{
+	font-family: $police_roboto;
+	background-color: #eaeaea;
+}
+
+.waiting-spinner{
+	opacity:0;
+	animation: page 400ms 3s;
+	animation-fill-mode: both;
+}
+
+h1{
+	font-family: 'Shrikhand', cursive;
+	font-size: 1.86em;
+	@include tablet-only{
+		font-size: 1.9em;
+	}
+	@include desktop-only{
+		font-size: 2.2em;
+	}
+}
+
+a{
+	text-decoration: none;
+}
+
+p{
+	font-size: 1.1em;
+	@include desktop-only{
+		font-size: 1.2em;
+	}
+}
+
+
+/*Loading Spinner*/
+#preloader {
+	background-color: #eaeaea;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 1;
+	animation: loader 400ms 3s;
+	animation-fill-mode: both;
+
+}
+#loader {
+	display: block;
+	@include loader(relative, $color-primary);
+	left: 50%;
+	top: 50%;
+	width: 150px;
+	height: 150px;
+	margin: -75px 0 0 -75px;
+	animation: spin 2s linear 2;
+	&:before {
+		content: "";
+		@include loader(absolute, $color-secondary);
+		top: 5px;
+		left: 5px;
+		right: 5px;
+		bottom: 5px;
+		animation: spin 3s linear 2;
+	}
+	&:after {
+		content: "";
+		@include loader(absolute, $color-tertiary);
+		top: 15px;
+		left: 15px;
+		right: 15px;
+		bottom: 15px;
+		animation: spin 1.5s linear 2;
+	}
+}
+
+
+/*Header*/
+
+header{
+	text-align: center;
+	background-color: $color-background-primary;
+	box-shadow: 0 1px 4px #cecece;
+	padding: 6% 0 2%;
+	@include tablet-only{
+		padding: 3% 0 2%;
+		box-shadow: 0 6px 4px rgba(113, 109, 109, 0.31);
+	}
+	@include desktop-only{
+		padding: 2% 0 1%;
+	}
+	@include max-desktop-only{
+		padding: 1.2% 0 0.5%;
+	}
+	
+	img{
+		width: 45%;
+		@include tablet-only{
+			width: 37%;
+		}
+		@include desktop-only{
+			width: 20%;
+		}
+		@include max-desktop-only{
+			width: 13%;
+		}
+	}
+}
+
+.header-menu{
+	display: flex;
+	justify-content: space-between;
+	padding: 6% 26% 2.5% 6.5%;
+	opacity: 1;
+	@include tablet-only{
+		padding: 4% 34% 2% 17%;
+	}
+	@include desktop-only{
+		padding: 2% 44% 1.5% 19.5%;
+	}
+
+	img{
+		width: 88%;
+		@include tablet-only{
+			width: 100%;
+		}
+		@include desktop-only{
+			width: 120%;
+		}
+	}
+
+	i{
+		font-size: 1.2em;
+		color: black;
+		@include tablet-only{
+			font-size: 1.5em;
+		}
+		@include desktop-only{
+			font-size: 1.8em;
+		}
+	}
+}
+
+
+/*Localisation*/
+.city{
+	text-align: center;
+	padding: 4% 35.5% 4% 28%;
+	display: flex;
+	justify-content: space-between;
+	color: #353535;
+	@include tablet-only{
+		padding: 2.5% 38% 1.5% 40%;
+	}
+	@include desktop-only{
+		padding: 1.4% 42% 1.2% 42%;
+	}
+	@include max-desktop-only{
+		padding: 1.4% 44% 1.2%;
+	}
+}
+
+
+/*Slogan + lien vers restaurant*/
+.slogan{
+	padding: 10.5% 0 19% 3%;
+	text-align: center;
+	background-color: $color-background-secondary;
+	@include tablet-only{
+		padding: 8% 0 12% 3%;
+	}
+	@include desktop-only{
+		padding: 4% 0 7% 0;
+	}
+
+
+	h1{
+		font-family: $police_roboto;
+		font-size: map-get($accueil-titre-size, mobile);
+		padding: 0 21% 0 14%;
+		@include tablet-only{
+			padding: 0 14%;
+			font-size: map-get($accueil-titre-size, tablet);
+		}
+		@include desktop-only{
+			padding: 0 34%;
+			font-size: map-get($accueil-titre-size, desktop);
+		}
+	}
+
+	p{
+		font-size: 1.26em;
+		margin: 3% 0 12% 0;
+		color: #353535;
+		@include tablet-only{
+			font-size: 1.2em;
+			margin: 4% 18% 7%;
+		}
+		@include desktop-only{
+			font-size: 1.4em;
+			margin: 2% 37.5% 4.5%;
+		}
+	}
+
+	a{
+		padding: 18px 24px;
+		@include bouton-mobile;
+		@include tablet-only{
+			padding: 22px 32px;
+			@include bouton-tablet;
+			box-shadow: map-get($shadow, tablet);
+		}
+		@include desktop-only{
+			padding: 21px 33px;
+			@include bouton-desktop;
+			box-shadow: map-get($shadow, desktop);
+		}
+	}
+}
+
+
+/*Fonctionnement*/
+.fonctionnement{
+	padding: 13.5% 0 11.5% 5%;
+	background-color: $color-background-primary;
+	@include tablet-only{
+		padding: 8% 0% 9% 5%;
+	}
+	@include desktop-only{
+		padding: 5% 2.7% 6% 5.7%;
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+	}
+	@include max-desktop-only{
+		padding: 5% 14% 6% 5.7%;
+	}
+
+	h2{
+		font-size: map-get($accueil-titre-size, mobile);
+		margin: 0 0.5% 7%;
+		@include tablet-only{
+			font-size: map-get($accueil-titre-size, tablet);
+			margin: 0 1% 5%;
+		}
+		@include desktop-only{
+			font-size: map-get($accueil-titre-size, desktop);
+			margin: 0 100% 3% 0;
+		}
+	}
+
+	p{
+		padding: 8.5% 0% 6.5%;
+		margin: 0 5% 6% 4%;
+		background: $color-background-secondary;
+		display: flex;
+		align-items: center;
+		border-radius: 30px;
+		box-shadow: map-get($shadow, mobile);
+		transition: background 300ms;
+		&:hover{
+			background: #f5edff;
+			i{
+				color: $color-primary;
+			}
+		}
+
+		@include tablet-only{
+			padding: 2.5% 0;
+			box-shadow: map-get($shadow, tablet);
+		}
+		@include desktop-only{
+			padding: 1.5% 0;
+			margin: 0 0 0 1%;
+			border-radius: 50px;
+			box-shadow: map-get($shadow, desktop);
+			font-size: 1.2em;
+			width: 31%;
+		}
+		@include max-desktop-only{
+			margin: 0 0 0 8%;
+			width: 25%;
+			font-size: 1.25em;
+		}
+
+		span{
+			margin-left: -4%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			min-width: 26px;
+			min-height: 26px;
+			background-color: $color-primary;
+			border-radius: 30px;
+			color: white;
+			@include tablet-only{
+				min-width: 32px;
+				min-height: 32px;
+			}
+			@include desktop-only{
+				min-width: 35px;
+				min-height: 35px;
+			}
+		}
+
+		i{
+			margin: 0 26px;
+			color: #7e7e7e;
+			transition: color 400ms;
+		}
+	}
+}
+
+.fa-mobile-alt{
+	font-size: 1.3em;
+}
+
+
+/*Restaurants*/
+#restaurant{
+	padding: 14.5% 0 12.5% 5%;
+	background-color: $color-background-secondary;
+	@include tablet-only{
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		padding: 8% 5% 9%;
+	}
+	@include desktop-only{
+		padding: 5% 6% 3%;
+	}
+
+	h2{
+		font-size: map-get($accueil-titre-size, mobile);
+		margin-bottom: 6%;
+		@include tablet-only{
+			font-size: map-get($accueil-titre-size, tablet);
+			margin: 0 100% 5% 0;
+		}
+		@include desktop-only{
+			font-size: map-get($accueil-titre-size, desktop);
+			margin: 0 100% 3% 0;
+		}
+	}
+
+	figure{
+		cursor: pointer;
+		width: 94.5%;
+		height: 280px;
+		overflow: hidden;
+		border-radius: 17px;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		position: relative;
+		margin-bottom: 17px;
+		box-shadow: map-get($shadow, mobile);
+		transition: box-shadow 700ms;
+		&:hover {
+			box-shadow: map-get($shadow, hover);
+		}
+		@include tablet-only{
+			width: 48%;
+			height: 300px;
+			border-radius: 30px;
+			margin-bottom: 5%;
+			box-shadow: map-get($shadow, tablet);
+		}
+		@include desktop-only{
+			width: 30%;
+			height: 375px;
+			box-shadow: map-get($shadow, desktop);
+		}
+		@include max-desktop-only{
+			width: 23%;
+			height: 450px;
+		}
+
+		figcaption{
+			min-height: 25%;
+			display: flex;
+			padding: 5% 4% 2%;
+			justify-content: space-between;
+			position: relative;
+			background-color: $color-background-primary;
+			@include tablet-only{
+				min-height: 20%;
+				padding: 4% 7% 4%;
+			}
+			@include desktop-only{
+				min-height: 17%;
+				padding: 4% 7% 4%;
+			}
+
+			h3{
+				font-size: 1.2em;
+				margin-bottom: 4px;
+				@include tablet-only{
+					font-size: 1.2em;
+					margin-bottom: 6px;
+				}
+				@include desktop-only{
+					font-size: 1.3em;
+					margin-bottom: 11px;
+				}
+			}
+
+			p{
+				font-size: 1.15em;
+				@include tablet-only{
+					font-size: 1em;
+				}
+				@include desktop-only{
+					font-size: 1em;
+				}
+			}
+
+			i{
+				font-size: 1.6em;
+				position: absolute;
+				top: 26px;
+				right: 26px;
+				@include icon;
+				@include tablet-only{
+					font-size: 1.8em;
+					top: 30px;
+					right: 30px;
+				}
+				@include desktop-only{
+					font-size: 2.1em;
+					top: 32px;
+					right: 32px;
+				}
+			}
+		}
+
+		img{
+			width: 100%;
+			max-height: 300%;
+			transition: width 700ms;
+			&:hover {
+				width: 103%;
+			}
+			@include tablet-only{
+				width: 130%;
+				&:hover {
+					width: 133%;
+				}
+			}
+			@include desktop-only{
+				width: 160%;
+				&:hover {
+					width: 163%;
+				}
+			}
+			@include max-desktop-only{
+				width: 200%;
+				margin-left: -40%;
+				&:hover {
+					width: 203%;
+					transition-duration: 700ms;
+				}
+			}
+		}
+	}
+}
+
+.new{
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	background-color: $color-tertiary;
+	color: #008766;
+	padding: 4px 9px;
+	border-radius: 2px;
+	@include tablet-only{
+		top: 25px;
+		right: 25px;
+	}
+	@include desktop-only{
+		top: 30px;
+		right: 30px;
+		padding: 6px 11px;
+		border-radius: 4px;
+	}
+}
+
+
+/*Footer*/
+footer{
+	padding: 6% 0 6.7% 6.5%;
+	color: white;
+	background-color: #353535;
+	@include tablet-only{
+		padding: 4% 49% 3% 8%;
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+	}
+	@include desktop-only{
+		padding: 3% 58% 1% 9.5%;
+	}
+
+	h4{
+		font-size: 1.24em;
+		margin-bottom: 19px;
+		font-family: 'Shrikhand', cursive;
+		@include tablet-only{
+			font-size: 1.5em;
+			margin: 0 100% 20px 0;
+		}
+		@include desktop-only{
+			font-size: 1.6em;
+			margin: 0 100% 29px 0;
+		}
+	}
+
+	p{
+		color: white;
+		font-size: 1.11em;
+		margin-bottom: 7px;
+		&:hover{
+			color: $color-tertiary;
+			transition-duration: 200ms;
+		}
+		@include tablet-only{
+			font-size: 1.1em;
+			margin-bottom: 17px;
+		}
+		@include desktop-only{
+			font-size: 1.2em;
+			margin-bottom: 28px;
+		}
+	}
+
+	i{
+		margin-right: 10px;
+		@include tablet-only{
+			margin-right: 14px;
+		}
+		@include desktop-only{
+			margin-right: 17px;
+		}
+	}
+
+	a:last-child{
+		@include tablet-only{
+			padding-right: 27.3%;
+		}
+	}
+}
+
+.fa-hands-helping{
+	font-size: 0.7em;
+	@include tablet-only{
+		font-size: 0.8em;
+	}
+	@include desktop-only{
+		font-size: 0.9em;
+	}
+}
+
+
+/*pages menus*/
+.main-menu{
+	padding-top: 59%;
+	background-attachment: fixed;
+	  background-repeat: no-repeat;
+	  background-position: top center;
+	  background-size: 126%;
+	  @include desktop-only{
+		padding: 32.5% 18.7% 0 17.2%;
+		  background-size: 100%;
+	}
+
+	  h1{
+		  background-color: $color-background-secondary;
+		  padding: 8.5% 9.5% 0 5.5%;
+		  border-radius: 43px 43px 0 0;
+		  display: flex;
+		  justify-content: space-between;
+		  align-items: center;
+		  @include tablet-only{
+			  padding: 6% 8% 0 6%;
+			  border-radius: 75px 75px 0 0;
+		}
+		  @include desktop-only{
+			  padding: 6% 8% 0;
+			  border-radius: 100px 100px 0 0;
+		}
+
+		  i{
+			  font-size: 1em;
+			  @include icon;
+		  }
+	  }
+}
+
+.palette{
+	background-image: url('../images/restaurants/jay-wennington-N_Y88TWmGwA-unsplash.jpg');
+	background-size: cover;
+	@include max-desktop-only{
+		  background-position: center 80%;
+	}
+}
+
+.enchantee{
+	background-image: url('../images/restaurants/stil-u2Lp8tXIcjw-unsplash.jpg');
+	  background-size: 100%;
+	  background-position: center -38px;
+	  @include tablet-only{
+		  background-position: center -200px;
+	}
+	  @include desktop-only{
+		  background-position: center 65%;
+	}
+}
+
+.francaise{
+	background-image: url('../images/restaurants/toa-heftiba-DQKerTsQwi0-unsplash.jpg');
+	@include desktop-only{
+		background-size: 150%;
+	}
+	@include max-desktop-only{
+		background-size: cover;
+		  background-position: center 50%;
+	}
+}
+
+.sens{
+	background-image: url('../images/restaurants/louis-hansel-shotsoflouis-qNBGVyOCY8Q-unsplash.jpg');
+	  background-size: 123%;
+	  @include desktop-only{
+		  background-size: cover;
+		  background-position: center 90%;
+	}
+}
+
+form{
+	background-color: $color-background-secondary;
+	padding: 8% 0 24%;
+	text-align: center;
+	@include tablet-only{
+		  padding: 6% 0 12%;
+	}
+	@include desktop-only{
+		  padding: 4% 0 12%;
+	}
+}
+
+.menu{
+	margin: 0 0 10.5% 3.7%;
+	text-align: left;
+	@include tablet-only{
+		  margin: 0 6% 8%;
+	}
+	@include desktop-only{
+		margin: 0 9% 7%;
+	}
+}
+
+h2{
+	font-size: 1.09em;
+	margin: 0 1.5% 23px;
+	@include tablet-only{
+		  font-size: 1.2em;
+		margin: 0 1.6% 30px;
+	}
+	@include desktop-only{
+		font-size: 1.3em;
+		margin: 0 1.7% 39px;
+	}
+
+	span{
+		border-bottom: 3px $color-tertiary solid;
+		padding-bottom: 4px;
+		@include tablet-only{
+			padding-bottom: 6px;
+		}
+		@include desktop-only{
+			border-bottom-width: 4px;
+			padding-bottom: 9px;
+		}
+
+	}
+}
+
+.choix{
+	background-color: $color-background-primary;
+	position: relative;
+	display: flex;
+	cursor: pointer;
+	box-shadow: map-get($shadow, mobile);
+	margin: 0% 3% 3.8% 0%;
+	overflow: hidden;
+	border-radius: 16px;
+	align-items: center;
+	&_un{
+		 @include apparition-progressive (500ms);
+	}
+	&_deux{
+		 @include apparition-progressive (900ms);
+	}
+	&_trois{
+		 @include apparition-progressive (1300ms);
+	}
+	&_quatre{
+		 @include apparition-progressive (1700ms);
+	}
+	&_cinq{
+		 @include apparition-progressive (2100ms);
+	}
+	&_six{
+		 @include apparition-progressive (2500ms);
+	}
+	&_sept{
+		 @include apparition-progressive (2900ms);
+	}
+	&_huit{
+		 @include apparition-progressive (3300ms);
+	}
+	&_neuf{
+		 @include apparition-progressive (3700ms);
+	}
+	&_dix{
+		 @include apparition-progressive (3950ms);
+	}
+	&:hover{
+		.choix-text{
+			width: 75%;
+		}
+
+		.checkbox-style{
+			transform: translateX(0);
+			&::after{
+				transform: rotate(-720deg);
+			}
+		}
+	}
+	@include tablet-only{
+		  box-shadow: map-get($shadow, tablet);
+		margin: 0% 0% 18px 0%;
+		&:hover{
+			.choix-text{
+				width: 80%;
+			}
+		}
+	}
+	@include desktop-only{
+		box-shadow: map-get($shadow, desktop);
+	}
+	@include max-desktop-only{
+		&:hover{
+			.choix-text{
+				width: 84%;
+			}
+		}
+	}
+
+	input{
+		visibility: hidden;
+	}
+}
+
+.choix-text{
+	width: 90%;
+	margin: 3.5% 3% 3.8%;
+	transition: width 800ms;
+	@include tablet-only{
+		width: 97%;
+		  margin: 2.5% 2%;
+	}
+	@include desktop-only{
+		margin: 2%;
+	}
+
+	h3{
+		font-size: 1.18em;
+		margin-bottom: 6px;
+		@include tablet-only{
+			  font-size: 1.2em;
+		}
+		@include desktop-only{
+			font-size: 1.2em;
+			margin-bottom: 5px;
+		}
+	}
+
+	p{
+		width: 100%;
+		overflow: hidden;
+		white-space:nowrap;
+		text-overflow: ellipsis;
+		display: block;
+	}
+
+	p, span{
+		font-size: 1.01em;
+		@include tablet-only{
+			  font-size: 0.9em;
+		}
+	}
+
+	.flex-choix{
+		display: flex;
+	}
+}
+
+.checkbox-style{
+	position: absolute;
+	display: flex;
+	top: 0;
+	right:0;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 66px;
+	transform: translateX(12vh);
+	transition: transform 800ms;
+	background-color: $color-tertiary;
+	&:after {
+	  font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f058";
+	  font-size: 1.4em;
+	  color: white;
+	  transform: rotate(0deg);
+	  transition: transform 600ms 100ms;
+	}
+	@include tablet-only{
+		transform: translateX(14vh);
+		width: 88px;
+		&:after {
+		  font-size: 1.6em;
+		}
+	}
+	@include desktop-only{
+		transform: translateX(13vh);
+		width: 77px;
+		&:after {
+		  font-size: 1.5em;
+		}
+	}
+	@include max-desktop-only{
+		transform: translateX(17vh);
+		width: 88px;
+	}
+}
+
+button{
+	margin: 3% 0 0 0;
+	padding: 16px 40px;
+	border-style: none;
+	font-family: $police_roboto;
+	@include bouton-mobile;
+	@include tablet-only{
+		padding: 19px 50px;
+		@include bouton-tablet;
+		box-shadow: map-get($shadow, tablet);
+	}
+	@include desktop-only{
+		margin: 4.4% 0 0 0;
+		padding: 20px 48px;
+		@include bouton-desktop;
+		box-shadow: map-get($shadow, desktop);
+	}
+}
