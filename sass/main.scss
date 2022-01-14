@@ -473,174 +473,118 @@ header{
 
 
 /*Restaurants*/
-#restaurant{
-	padding: 14.5% 0 12.5% 5%;
-	background-color: $color-background-secondary;
-	@include tablet-only{
-		display: flex;
-		justify-content: space-between;
-		flex-wrap: wrap;
-		padding: 8% 5% 9%;
-	}
-	@include desktop-only{
-		padding: 5% 6% 3%;
-	}
+/* PARTIE RESTAURANTS */
+.container__card { 
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-between;
+    &__title { 
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+}
 
-	h2{
-		font-size: map-get($accueil-titre-size, mobile);
-		margin-bottom: 6%;
-		@include tablet-only{
-			font-size: map-get($accueil-titre-size, tablet);
-			margin: 0 100% 5% 0;
-		}
-		@include desktop-only{
-			font-size: map-get($accueil-titre-size, desktop);
-			margin: 0 100% 3% 0;
-		}
-	}
+.card { 
+    background: #fff;
+    width: 45%;
+    height: 360px;
+    border-radius: 15px;
+    margin-bottom: 50px;
+    box-shadow: $box-shadow;
+    position: relative;
+    &__img {
+        height: 80%;
+        & .restaurant-img { 
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+    }
+    &__infos {
+        margin-left: 20px;
+        & h3, p { 
+            margin: 10px 0px 10px 0px;
+        }
+    } 
+    &__new {
+        width: 80px;
+        padding: 10px;
+        text-align: center;
+        display: inline-block;
+        color: darken($colour-tertiary, 45);
+        background-color: #99E2D0;
+        border-radius: 3px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 20px;
+    }   
+}
 
-	figure{
-		cursor: pointer;
-		width: 94.5%;
-		height: 280px;
-		overflow: hidden;
-		border-radius: 17px;
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-end;
-		position: relative;
-		margin-bottom: 17px;
-		box-shadow: map-get($shadow, mobile);
-		transition: box-shadow 700ms;
-		&:hover {
-			box-shadow: map-get($shadow, hover);
-		}
-		@include tablet-only{
-			width: 48%;
-			height: 300px;
-			border-radius: 30px;
-			margin-bottom: 5%;
-			box-shadow: map-get($shadow, tablet);
-		}
-		@include desktop-only{
-			width: 30%;
-			height: 375px;
-			box-shadow: map-get($shadow, desktop);
-		}
-		@include max-desktop-only{
-			width: 23%;
-			height: 450px;
-		}
+/* Pour Laptop L */
+@media  screen and (max-width: 1440px) {
+    .container__card { 
+        margin: 0 1rem 0 1rem;
+    }
+}
 
-		figcaption{
-			min-height: 25%;
-			display: flex;
-			padding: 5% 4% 2%;
-			justify-content: space-between;
+@media screen and(max-width: 768px) {
+    .container__card { 
+        flex-direction: column;
+    }
+
+    .card {
+        width: 90%;
+    }
+}
+
+@media  screen and(max-width: 425px) {
+    .container__fonctionnement__title { 
+        padding-left: 0;
+    }
+    .box__text { 
+        font-size: 5vw;
+    }
+    .card {
+        width: 100%;
+        height: 250px;
+        &__img { 
+            height: 180px;
+        }
+    }
+    h2 { 
+        display: flex;
+        padding-left: 1rem;
+    }
+}
+
+       /* Icones reservation pour les plats */
+	   .card__check { 
+		position: absolute;
+		top: 0;
+		right: 0;
+		height: 100%;
+		width: 5rem;
+		border-top-right-radius: 15px;
+		border-bottom-right-radius: 15px;
+		background: $colour-tertiary;
+		text-align: center;
+		animation: validation  0.4s ease;
+		transform-origin: right 50%;
+		display: none; 
+		&__icon { 
+			animation: rotation 0.4s linear;
 			position: relative;
-			background-color: $color-background-primary;
-			@include tablet-only{
-				min-height: 20%;
-				padding: 4% 7% 4%;
-			}
-			@include desktop-only{
-				min-height: 17%;
-				padding: 4% 7% 4%;
-			}
-
-			h3{
-				font-size: 1.2em;
-				margin-bottom: 4px;
-				@include tablet-only{
-					font-size: 1.2em;
-					margin-bottom: 6px;
-				}
-				@include desktop-only{
-					font-size: 1.3em;
-					margin-bottom: 11px;
-				}
-			}
-
-			p{
-				font-size: 1.15em;
-				@include tablet-only{
-					font-size: 1em;
-				}
-				@include desktop-only{
-					font-size: 1em;
-				}
-			}
-
-			i{
-				font-size: 1.6em;
-				position: absolute;
-				top: 26px;
-				right: 26px;
-				@include icon;
-				@include tablet-only{
-					font-size: 1.8em;
-					top: 30px;
-					right: 30px;
-				}
-				@include desktop-only{
-					font-size: 2.1em;
-					top: 32px;
-					right: 32px;
-				}
-			}
-		}
-
-		img{
-			width: 100%;
-			max-height: 300%;
-			transition: width 700ms;
-			&:hover {
-				width: 103%;
-			}
-			@include tablet-only{
-				width: 130%;
-				&:hover {
-					width: 133%;
-				}
-			}
-			@include desktop-only{
-				width: 160%;
-				&:hover {
-					width: 163%;
-				}
-			}
-			@include max-desktop-only{
-				width: 200%;
-				margin-left: -40%;
-				&:hover {
-					width: 203%;
-					transition-duration: 700ms;
-				}
-			}
-		}
+			top: 20px;
+			font-size: 2rem;
+			color: #fff;
+		}  
 	}
-}
-
-.new{
-	position: absolute;
-	top: 15px;
-	right: 15px;
-	background-color: $color-tertiary;
-	color: #008766;
-	padding: 4px 9px;
-	border-radius: 2px;
-	@include tablet-only{
-		top: 25px;
-		right: 25px;
+	
 	}
-	@include desktop-only{
-		top: 30px;
-		right: 30px;
-		padding: 6px 11px;
-		border-radius: 4px;
-	}
-}
-
 
 /*Footer*/
 footer{
